@@ -28,7 +28,7 @@ const timesStore = useTimesStore()
             {{ formatDuration(timesStore.workTimeOfSelectedDay, { format: ['hours', 'minutes'] }) }}
           </div>
           <div>
-            <template v-if="timesStore.workTimeOfSelectedDay.hours ?? 0 < 8">
+            <template v-if="(timesStore.workTimeOfSelectedDay.hours ?? 0) < 8">
               8 Stunden erreicht in:
             </template>
             <template v-else>Überstunden:</template>

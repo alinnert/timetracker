@@ -11,6 +11,11 @@ const storedTimestamps = (
 
 export const useTimesStore = defineStore('times', () => {
   const timestamps = ref<Date[]>(storedTimestamps)
+  const currentTime = ref<Date>(new Date())
+
+  setInterval(() => {
+    currentTime.value = new Date()
+  }, 1000)
 
   watchEffect(() => {
     const serializedTimestamps = JSON.stringify(
@@ -40,10 +45,12 @@ export const useTimesStore = defineStore('times', () => {
   const workTimeOfSelectedDay = computed((): Duration => {
     const workTimeDurations: Duration[] = []
 
-    timestamps.value.forEach((timestamp, index) => {
+    const list = [...timestampsOfSelectedDay.value, currentTime.value]
+
+    list.forEach((timestamp, index) => {
       if (index % 2 === 0) return
       workTimeDurations.push(
-        intervalToDuration({ start: timestamps.value[index - 1], end: timestamp })
+        intervalToDuration({ start: timestampsOfSelectedDay.value[index - 1], end: timestamp })
       )
     })
 
@@ -53,11 +60,15 @@ export const useTimesStore = defineStore('times', () => {
   const breakTimeOfSelectedDay = computed((): Duration => {
     const breakTimeDurations: Duration[] = []
 
-    timestamps.value.forEach((timestamp, index) => {
+    const list = isSameDay(timestampsOfSelectedDay.value[0], new Date())
+      ? [...timestampsOfSelectedDay.value, currentTime.value]
+      : timestampsOfSelectedDay.value
+
+    list.forEach((timestamp, index) => {
       if (index % 2 === 1 || index === 0) return
 
       breakTimeDurations.push(
-        intervalToDuration({ start: timestamps.value[index - 1], end: timestamp })
+        intervalToDuration({ start: timestampsOfSelectedDay.value[index - 1], end: timestamp })
       )
     })
 

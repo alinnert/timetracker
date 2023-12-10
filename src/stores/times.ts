@@ -6,6 +6,8 @@ import { add, intervalToDuration, isSameDay, isToday } from 'date-fns'
 import { defineStore } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
 
+export type DayInfo = SumTimestampsResult & { timestampsCount: number }
+
 const timestampsStorageKey = 'timetracker:timestamps'
 const storedTimestamps = (
   JSON.parse(localStorage.getItem(timestampsStorageKey) ?? '[]') as number[]
@@ -136,12 +138,15 @@ export const useTimesStore = defineStore('times', () => {
       timestamps.value = []
     },
 
-    getDayInfo(day: Date): SumTimestampsResult {
-      const filteredTimestamps = timestamps.value.filter(time => isSameDay(time, day))
+    getDayInfo(day: Date): DayInfo {
+      const filteredTimestamps = timestamps.value.filter((time) => isSameDay(time, day))
+      const timestampsCount = filteredTimestamps.length
+
       if (isToday(day)) {
         filteredTimestamps.push(currentTime.value)
       }
-      return sumTimestamps(filteredTimestamps)
-    }
+
+      return { ...sumTimestamps(filteredTimestamps), timestampsCount }
+    },
   }
 })

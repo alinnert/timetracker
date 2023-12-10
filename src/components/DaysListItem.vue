@@ -31,17 +31,22 @@ const breakTime = computed(() => {
     }"
     @click="timesStore.setSelectedDay(day)"
   >
-    <div class="font-mono font-bold flex-grow">
+    <div
+      class="font-mono font-bold flex-grow"
+      :class="{ 'opacity-50 italic': dayInfo.timestampsCount === 0 }"
+    >
       {{ format(day, 'dd.MM.yyyy EEEEEE', { locale: de }) }}
     </div>
 
-    <div class="text-sm">
-      <div>
-        Arbeit: <span class="font-mono">{{ workTime }}</span>
+    <template v-if="dayInfo.timestampsCount > 0">
+      <div class="text-sm">
+        <div>
+          Arbeit: <span class="font-mono">{{ workTime }}</span>
+        </div>
+        <div>
+          Pause: <span class="font-mono">{{ breakTime }}</span>
+        </div>
       </div>
-      <div>
-        Pause: <span class="font-mono">{{ breakTime }}</span>
-      </div>
-    </div>
+    </template>
   </div>
 </template>

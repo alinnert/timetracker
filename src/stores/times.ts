@@ -1,5 +1,6 @@
 import { addDurations } from '@/lib/date-fns/addDuration'
 import { subtractDuration } from '@/lib/date-fns/subtractDuration'
+import { sortDates } from '@/lib/date/sortDates'
 import { add, intervalToDuration, isSameDay } from 'date-fns'
 import { defineStore } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
@@ -33,7 +34,7 @@ export const useTimesStore = defineStore('times', () => {
       }
     }
 
-    days.sort()
+    days.sort(sortDates)
 
     const today = new Date(currentTime.value.getFullYear(), currentTime.value.getMonth(), currentTime.value.getDate())
 
@@ -111,7 +112,7 @@ export const useTimesStore = defineStore('times', () => {
     },
     addTime(time: Date) {
       timestamps.value.push(time)
-      timestamps.value.sort()
+      timestamps.value.sort(sortDates)
     },
     addCurrentTime() {
       this.addTime(new Date())

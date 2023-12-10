@@ -20,7 +20,7 @@ export const useTimesStore = defineStore('times', () => {
 
   watchEffect(() => {
     const serializedTimestamps = JSON.stringify(
-      timestamps.value.map((timestamp) => timestamp.getTime())
+      timestamps.value.map((timestamp) => timestamp.getTime()),
     )
     localStorage.setItem(timestampsStorageKey, serializedTimestamps)
   })
@@ -34,9 +34,13 @@ export const useTimesStore = defineStore('times', () => {
       }
     }
 
-    days.sort(sortDates)
+    days.sort(sortDates())
 
-    const today = new Date(currentTime.value.getFullYear(), currentTime.value.getMonth(), currentTime.value.getDate())
+    const today = new Date(
+      currentTime.value.getFullYear(),
+      currentTime.value.getMonth(),
+      currentTime.value.getDate(),
+    )
 
     if (!isSameDay(days[0], today)) {
       days.unshift(today)
@@ -52,7 +56,9 @@ export const useTimesStore = defineStore('times', () => {
   })
 
   const timestampsOfSelectedDay = computed((): Date[] => {
-    return timestamps.value.filter((timestamp) => isSameDay(timestamp, selectedDay.value))
+    const result = timestamps.value.filter((timestamp) => isSameDay(timestamp, selectedDay.value))
+    result.sort(sortDates(true))
+    return result
   })
 
   const workTimeOfSelectedDay = computed((): Duration => {
@@ -63,7 +69,7 @@ export const useTimesStore = defineStore('times', () => {
     list.forEach((timestamp, index) => {
       if (index % 2 === 0) return
       workTimeDurations.push(
-        intervalToDuration({ start: timestampsOfSelectedDay.value[index - 1], end: timestamp })
+        intervalToDuration({ start: timestampsOfSelectedDay.value[index - 1], end: timestamp }),
       )
     })
 
@@ -81,7 +87,7 @@ export const useTimesStore = defineStore('times', () => {
       if (index % 2 === 1 || index === 0) return
 
       breakTimeDurations.push(
-        intervalToDuration({ start: timestampsOfSelectedDay.value[index - 1], end: timestamp })
+        intervalToDuration({ start: timestampsOfSelectedDay.value[index - 1], end: timestamp }),
       )
     })
 
@@ -112,7 +118,6 @@ export const useTimesStore = defineStore('times', () => {
     },
     addTime(time: Date) {
       timestamps.value.push(time)
-      timestamps.value.sort(sortDates)
     },
     addCurrentTime() {
       this.addTime(new Date())

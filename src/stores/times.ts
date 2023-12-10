@@ -1,6 +1,6 @@
 import { addDurations } from '@/lib/date-fns/addDuration'
 import { subtractDuration } from '@/lib/date-fns/subtractDuration'
-import { intervalToDuration, isSameDay } from 'date-fns'
+import { add, intervalToDuration, isSameDay } from 'date-fns'
 import { defineStore } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
 
@@ -37,6 +37,10 @@ export const useTimesStore = defineStore('times', () => {
   })
 
   const selectedDay = ref<Date>(new Date())
+
+  const selectedDayIsToday = computed((): boolean => {
+    return isSameDay(currentTime.value, selectedDay.value)
+  })
 
   const timestampsOfSelectedDay = computed((): Date[] => {
     return timestamps.value.filter((timestamp) => isSameDay(timestamp, selectedDay.value))
@@ -79,14 +83,21 @@ export const useTimesStore = defineStore('times', () => {
     return subtractDuration({ hours: 8 }, workTimeOfSelectedDay.value)
   })
 
+  const timeAfterRemainingWorkTimeOfSelectedDay = computed((): Date => {
+    return add(currentTime.value, remainingWorkTimeOfSelectedDay.value)
+  })
+
   return {
+    currentTime,
     timestamps,
     allDays,
     selectedDay,
+    selectedDayIsToday,
     timestampsOfSelectedDay,
     workTimeOfSelectedDay,
     breakTimeOfSelectedDay,
     remainingWorkTimeOfSelectedDay,
+    timeAfterRemainingWorkTimeOfSelectedDay,
     setSelectedDay(day: Date) {
       selectedDay.value = day
     },
@@ -103,6 +114,6 @@ export const useTimesStore = defineStore('times', () => {
     },
     clearDates() {
       timestamps.value = []
-    }
+    },
   }
 })

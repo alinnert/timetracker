@@ -1,7 +1,8 @@
 import { addDurations } from '@/lib/date-fns/addDuration'
 import { subtractDuration } from '@/lib/date-fns/subtractDuration'
 import { sortDates } from '@/lib/date/sortDates'
-import { add, intervalToDuration, isSameDay } from 'date-fns'
+import { sumTimestamps, type SumTimestampsResult } from '@/lib/sys/times'
+import { add, intervalToDuration, isSameDay, isToday } from 'date-fns'
 import { defineStore } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
 
@@ -113,21 +114,34 @@ export const useTimesStore = defineStore('times', () => {
     breakTimeOfSelectedDay,
     remainingWorkTimeOfSelectedDay,
     timeAfterRemainingWorkTimeOfSelectedDay,
+
     setSelectedDay(day: Date) {
       selectedDay.value = day
     },
+
     addTime(time: Date) {
       timestamps.value.push(time)
     },
+
     addCurrentTime() {
       this.addTime(new Date())
     },
+
     removeDate(time: Date) {
       if (!timestamps.value.includes(time)) return
       timestamps.value.splice(timestamps.value.indexOf(time), 1)
     },
+
     clearDates() {
       timestamps.value = []
     },
+
+    getDayInfo(day: Date): SumTimestampsResult {
+      const filteredTimestamps = timestamps.value.filter(time => isSameDay(time, day))
+      if (isToday(day)) {
+        filteredTimestamps.push(currentTime.value)
+      }
+      return sumTimestamps(filteredTimestamps)
+    }
   }
 })

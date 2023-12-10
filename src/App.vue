@@ -11,7 +11,7 @@ const timesStore = useTimesStore()
 <template>
   <div class="grid grid-cols-1 sm:grid-cols-[1fr,600px,1fr] sm:my-4">
     <div
-      class="grid grid-cols-1 sm:grid-cols-[160px,1px,1fr] grid-rows-[auto,1px,auto] sm:grid-rows-1 gap-4 sm:col-start-2 sm:bg-white p-4 sm:rounded-lg sm:shadow-lg"
+      class="grid grid-cols-1 sm:grid-cols-[180px,1px,1fr] grid-rows-[auto,1px,auto] sm:grid-rows-1 gap-4 sm:col-start-2 sm:bg-white p-4 sm:rounded-lg sm:shadow-lg"
     >
       <div class="row-start-3 sm:row-start-auto">
         <DaysList :items="timesStore.allDays"></DaysList>

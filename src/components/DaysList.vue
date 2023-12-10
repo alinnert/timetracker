@@ -7,7 +7,7 @@ defineProps<{ items: Date[] }>()
 <template>
   <div class="flex flex-col gap-1">
     <template v-for="(day, index) in items" :key="index">
-      <DaysListItem :day="day"></DaysListItem>
+      <DaysListItem :day="day" :class="{ 'font-bold': index === 0 }"></DaysListItem>
     </template>
   </div>
 </template>

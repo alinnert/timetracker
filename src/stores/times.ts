@@ -33,6 +33,14 @@ export const useTimesStore = defineStore('times', () => {
       }
     }
 
+    days.sort()
+
+    const today = new Date(currentTime.value.getFullYear(), currentTime.value.getMonth(), currentTime.value.getDate())
+
+    if (!isSameDay(days[0], today)) {
+      days.unshift(today)
+    }
+
     return days
   })
 

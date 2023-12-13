@@ -18,12 +18,20 @@ function getSegmentWidth(index: number): string {
   <div class="flex gap-1">
     <template v-for="i in 11" :key="i">
       <div
-        class="flex h-3 rounded-full flex-grow overflow-hidden"
-        :class="{ 'bg-sky-200': i <= 8, 'bg-yellow-200': i > 8 && i <= 10, 'bg-rose-200': i > 10 }"
+        class="flex h-2 rounded-full flex-grow overflow-hidden"
+        :class="{
+          'bg-sky-300': i <= 8,
+          'bg-yellow-300': i > 8 && i <= 10,
+          'bg-rose-300': i > 10,
+        }"
       >
         <div
           class="h-full"
-          :class="{ 'bg-sky-800': i <= 8, 'bg-yellow-800': i > 8 && i <= 10, 'bg-rose-800': i > 10 }"
+          :class="{
+            'bg-sky-800': i <= 8,
+            'bg-yellow-800': i > 8 && i <= 10,
+            'bg-rose-800': i > 10,
+          }"
           :style="{ width: getSegmentWidth(i) }"
         ></div>
       </div>

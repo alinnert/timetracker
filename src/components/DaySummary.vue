@@ -3,7 +3,6 @@ import { useTimesStore } from '@/stores/times'
 import { format, formatDuration } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { computed } from 'vue'
-import { getRatio } from '../lib/date-fns/getRatio'
 import HoursProgress from './HoursProgress.vue'
 
 const timesStore = useTimesStore()
@@ -31,25 +30,25 @@ const remainingLabel = computed(() =>
 
     <div class="text-right">
       <div class="text-gray-500">{{ remainingLabel }}</div>
-      <div class="font-bold">
-        {{
-          formatDuration(timesStore.remainingWorkTimeOfSelectedDay, {
-            format: ['hours', 'minutes'],
-            locale: de,
-          })
-        }}
-      </div>
+      <div>
+        <span class="font-bold">
+          {{
+            formatDuration(timesStore.remainingWorkTimeOfSelectedDay, {
+              format: ['hours', 'minutes'],
+              locale: de,
+            })
+          }}
+        </span>
 
-      <template v-if="lessThan8Hours && timesStore.selectedDayIsToday">
-        <div>
-          um
-          <strong>
+        <template v-if="lessThan8Hours && timesStore.selectedDayIsToday">
+          <span> um </span>
+          <span class="font-bold">
             {{
               format(timesStore.timeAfterRemainingWorkTimeOfSelectedDay, 'HH:mm', { locale: de })
             }}
-          </strong>
-        </div>
-      </template>
+          </span>
+        </template>
+      </div>
     </div>
 
     <div class="col-span-2">

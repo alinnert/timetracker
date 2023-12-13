@@ -4,6 +4,8 @@ import { format, isSameDay } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { computed } from 'vue'
 import { formatDuration } from '../lib/date-fns/formatDuration'
+import HoursProgress from './HoursProgress.vue'
+import UiStack from './UiStack.vue'
 
 const props = defineProps<{ day: Date }>()
 
@@ -24,29 +26,34 @@ const breakTime = computed(() => {
 
 <template>
   <div
-    class="flex sm:flex-col px-3 py-2 cursor-default rounded select-none"
+    class="flex sm:flex-col px-3 py-2 cursor-default rounded-lg select-none"
     :class="{
-      'hover:bg-sky-100': !isSameDay(timesStore.selectedDay, day),
-      'bg-sky-200': isSameDay(timesStore.selectedDay, day),
+      'hover:bg-gray-100 active:bg-gray-200': !isSameDay(timesStore.selectedDay, day),
+      'bg-sky-100': isSameDay(timesStore.selectedDay, day),
     }"
     @click="timesStore.setSelectedDay(day)"
   >
-    <div
-      class="font-mono font-bold flex-grow"
-      :class="{ 'opacity-50 italic': dayInfo.timestampsCount === 0 }"
-    >
-      {{ format(day, 'dd.MM.yyyy EEEEEE', { locale: de }) }}
-    </div>
-
-    <template v-if="dayInfo.timestampsCount > 0">
-      <div class="text-sm">
-        <div>
-          Arbeit: <span class="font-mono">{{ workTime }}</span>
-        </div>
-        <div>
-          Pause: <span class="font-mono">{{ breakTime }}</span>
-        </div>
+    <UiStack :gap="2">
+      <div
+        class="flex-grow flex justify-between"
+        :class="{ 'opacity-50 italic': dayInfo.timestampsCount === 0 }"
+      >
+        <span class="font-mono font-bold">{{ format(day, 'dd.MM.yyyy', { locale: de }) }}</span>
+        <span>{{ format(day, 'EEEEEEE', { locale: de }) }}</span>
       </div>
-    </template>
+
+      <template v-if="dayInfo.timestampsCount > 0">
+        <HoursProgress :value="dayInfo.worktime"></HoursProgress>
+
+        <div class="text-xs flex justify-between">
+          <div>
+            <span class="font-mono">{{ workTime }}</span>
+          </div>
+          <div>
+            Pause: <span class="font-mono">{{ breakTime }}</span>
+          </div>
+        </div>
+      </template>
+    </UiStack>
   </div>
 </template>

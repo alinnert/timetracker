@@ -16,6 +16,7 @@ const storedTimestamps = (
 export const useTimesStore = defineStore('times', () => {
   const timestamps = ref<Date[]>(storedTimestamps)
   const currentTime = ref<Date>(new Date())
+  const importData = ref<number[]>([])
 
   setInterval(() => {
     currentTime.value = new Date()
@@ -116,6 +117,7 @@ export const useTimesStore = defineStore('times', () => {
     breakTimeOfSelectedDay,
     remainingWorkTimeOfSelectedDay,
     timeAfterRemainingWorkTimeOfSelectedDay,
+    importData,
 
     setSelectedDay(day: Date) {
       selectedDay.value = day
@@ -147,6 +149,42 @@ export const useTimesStore = defineStore('times', () => {
       }
 
       return { ...sumTimestamps(filteredTimestamps), timestampsCount }
+    },
+
+    copyTimesToClipboard() {
+      const data = localStorage.getItem(timestampsStorageKey)
+      if (data === null) return
+      navigator.clipboard.writeText(data)
+    },
+
+    importTimesFromClipboard() {
+      navigator.clipboard.readText().then((data) => {
+        try {
+          const parsedData = JSON.parse(data)
+          if (!Array.isArray(parsedData)) return
+          const allAreNumbers = parsedData.every((item) => typeof item === 'number')
+          if (!allAreNumbers) return
+          importData.value = parsedData
+        } catch (err) {
+          console.error(err)
+        }
+      })
+    },
+
+    applyImport(replace = false) {
+      const newTimestamps = importData.value.map((item) => new Date(item))
+
+      if (replace) {
+        timestamps.value = newTimestamps
+      } else {
+        timestamps.value.push(...newTimestamps)
+      }
+
+      importData.value = []
+    },
+
+    abortImport() {
+      importData.value = []
     },
   }
 })

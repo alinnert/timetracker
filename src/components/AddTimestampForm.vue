@@ -3,7 +3,6 @@ import { useTimesStore } from '@/stores/times'
 import { ref } from 'vue'
 import TextInput from './TextInput.vue'
 import ToolbarButton from './ToolbarButton.vue'
-import { debug } from 'console';
 
 const value = ref('')
 const error = ref(false)
@@ -21,10 +20,11 @@ function handleAddClick() {
 
   const [, , matchedYear, matchedMonth, matchedDay, matchedHours, matchedMinutes] = match
 
-  const {selectedDay} = timesStore
+  const { selectedDay } = timesStore
 
   const year = matchedYear !== undefined ? Number.parseInt(matchedYear) : selectedDay.getFullYear()
-  const month = matchedMonth !== undefined ? Number.parseInt(matchedMonth) - 1 : selectedDay.getMonth()
+  const month =
+    matchedMonth !== undefined ? Number.parseInt(matchedMonth) - 1 : selectedDay.getMonth()
   const day = matchedDay !== undefined ? Number.parseInt(matchedDay) : selectedDay.getDate()
   const hours = Number.parseInt(matchedHours)
   const minutes = Number.parseInt(matchedMinutes)

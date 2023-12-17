@@ -3,6 +3,7 @@ import { useTimesStore } from '@/stores/times'
 import { ref } from 'vue'
 import TextInput from './TextInput.vue'
 import ToolbarButton from './ToolbarButton.vue'
+import { XMarkIcon } from '@heroicons/vue/20/solid'
 
 const value = ref('')
 const error = ref(false)
@@ -67,18 +68,9 @@ function handleInput() {
         </div>
         <div
           @click="handleErrorClose"
-          class="hover:bg-red-800 hover:text-white active:bg-red-700 active:text-white rounded"
+          class="self-start bg-red-200 text-red-900 hover:bg-red-800 hover:text-white active:bg-red-700 active:text-white rounded"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            class="w-5 h-5"
-          >
-            <path
-              d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"
-            />
-          </svg>
+          <XMarkIcon class="w-5 h-5"></XMarkIcon>
         </div>
       </div>
     </template>

@@ -8,7 +8,7 @@
   }
 
   .app-grid {
-    @apply grid gap-4;
+    @apply grid;
   }
 
   .app-mobile-grid {

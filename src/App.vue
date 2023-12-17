@@ -11,13 +11,19 @@ import ToolbarMenuItem from './components/ToolbarMenuItem.vue'
 import UiStack from './components/UiStack.vue'
 import UiToolbar from './components/UiToolbar.vue'
 import { useTimesStore } from './stores/times'
+import ToolbarTitle from './components/ToolbarTitle.vue'
 
 const timesStore = useTimesStore()
 </script>
 
 <template>
-  <div class="fixed inset-0 app-grid app-mobile-grid sm:app-desktop-grid p-4">
+  <div class="fixed inset-0 app-grid app-mobile-grid sm:app-desktop-grid">
     <UiToolbar class="[grid-area:header]">
+      <ToolbarTitle
+        ><span class="text-[30px] align-middle">⏱️</span>
+        <span class="align-sub">Timetracker</span></ToolbarTitle
+      >
+
       <ToolbarMenu>
         <template #button>Daten</template>
 
@@ -40,11 +46,13 @@ const timesStore = useTimesStore()
     </UiToolbar>
 
     <div class="[grid-area:left] overflow-auto">
-      <DaysList :items="timesStore.allDays"></DaysList>
+      <div class="p-4">
+        <DaysList :items="timesStore.allDays"></DaysList>
+      </div>
     </div>
 
     <div class="[grid-area:main] overflow-auto flex flex-col items-center">
-      <div class="w-[540px] max-w-full">
+      <div class="w-[540px] max-w-full py-8">
         <UiStack>
           <DetailHeader></DetailHeader>
           <DaySummary></DaySummary>

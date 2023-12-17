@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+from xml.dom.minidom import parse
+
+website_dir = './public'
+
+appicon_files = [file for file in os.listdir(website_dir) if file.startswith('appicon')]
+
+# Create favicon.ico
+favicon_files = [file for file in os.listdir(website_dir) if file.startswith('favicon')]
+source_favicon_paths = [os.path.join(website_dir, file) for file in favicon_files]
+output_favicon_path = os.path.join(website_dir, 'favicon.ico')
+
+magick_command = ['magick', 'convert', *source_favicon_paths, output_favicon_path]
+subprocess.run(magick_command)
+print("created:", output_favicon_path)

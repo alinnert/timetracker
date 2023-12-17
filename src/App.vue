@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { format } from 'date-fns'
-import { de } from 'date-fns/locale'
+import AddTimestampForm from './components/AddTimestampForm.vue'
 import DaySummary from './components/DaySummary.vue'
 import DaysList from './components/DaysList.vue'
+import DetailHeader from './components/DetailHeader.vue'
 import TimestampList from './components/TimestampList.vue'
 import ToolbarButton from './components/ToolbarButton.vue'
 import ToolbarMenu from './components/ToolbarMenu.vue'
@@ -10,7 +10,6 @@ import ToolbarMenuItem from './components/ToolbarMenuItem.vue'
 import UiStack from './components/UiStack.vue'
 import UiToolbar from './components/UiToolbar.vue'
 import { useTimesStore } from './stores/times'
-import AddTimestampForm from './components/AddTimestampForm.vue'
 
 const timesStore = useTimesStore()
 </script>
@@ -82,11 +81,9 @@ const timesStore = useTimesStore()
     <div class="[grid-area:main] overflow-auto flex flex-col items-center">
       <div class="w-[540px] max-w-full">
         <UiStack>
-          <div class="text-2xl font-bold">
-            {{ format(timesStore.selectedDay, 'EEEEEEE, dd. MMMM yyyy', { locale: de }) }}
-          </div>
-          <TimestampList></TimestampList>
+          <DetailHeader></DetailHeader>
           <DaySummary></DaySummary>
+          <TimestampList></TimestampList>
         </UiStack>
       </div>
     </div>

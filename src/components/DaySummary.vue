@@ -15,55 +15,54 @@ const remainingLabel = computed(() =>
 </script>
 
 <template>
-  <div class="grid grid-cols-[1fr,auto] gap-2">
-    <div>
-      <div class="text-gray-500">Arbeitszeit</div>
-      <div class="font-bold">
-        {{
-          formatDuration(timesStore.workTimeOfSelectedDay, {
-            format: ['hours', 'minutes'],
-            locale: de,
-          }) || '-'
-        }}
-      </div>
-    </div>
-
-    <div class="text-right">
-      <div class="text-gray-500">{{ remainingLabel }}</div>
+  <div>
+    <div class="text-lg font-bold mb-2">Zusammenfassung</div>
+    <div class="grid grid-cols-[1fr,auto] gap-2">
       <div>
-        <span class="font-bold">
+        <div class="text-gray-500">Arbeitszeit</div>
+        <div class="font-bold">
           {{
-            formatDuration(timesStore.remainingWorkTimeOfSelectedDay, {
+            formatDuration(timesStore.workTimeOfSelectedDay, {
               format: ['hours', 'minutes'],
               locale: de,
-            })
+            }) || '-'
           }}
-        </span>
-
-        <template v-if="lessThan8Hours && timesStore.selectedDayIsToday">
-          <span> um </span>
+        </div>
+      </div>
+      <div class="text-right">
+        <div class="text-gray-500">{{ remainingLabel }}</div>
+        <div>
           <span class="font-bold">
             {{
-              format(timesStore.timeAfterRemainingWorkTimeOfSelectedDay, 'HH:mm', { locale: de })
+              formatDuration(timesStore.remainingWorkTimeOfSelectedDay, {
+                format: ['hours', 'minutes'],
+                locale: de,
+              })
             }}
           </span>
-        </template>
+          <template v-if="lessThan8Hours && timesStore.selectedDayIsToday">
+            <span> um </span>
+            <span class="font-bold">
+              {{
+                format(timesStore.timeAfterRemainingWorkTimeOfSelectedDay, 'HH:mm', { locale: de })
+              }}
+            </span>
+          </template>
+        </div>
       </div>
-    </div>
-
-    <div class="col-span-2">
-      <HoursProgress :value="timesStore.workTimeOfSelectedDay"></HoursProgress>
-    </div>
-
-    <div>
-      <div class="text-gray-500">Pausenzeit</div>
-      <div class="font-bold">
-        {{
-          formatDuration(timesStore.breakTimeOfSelectedDay, {
-            format: ['hours', 'minutes'],
-            locale: de,
-          }) || '-'
-        }}
+      <div class="col-span-2">
+        <HoursProgress :value="timesStore.workTimeOfSelectedDay"></HoursProgress>
+      </div>
+      <div>
+        <div class="text-gray-500">Pausenzeit</div>
+        <div class="font-bold">
+          {{
+            formatDuration(timesStore.breakTimeOfSelectedDay, {
+              format: ['hours', 'minutes'],
+              locale: de,
+            }) || '-'
+          }}
+        </div>
       </div>
     </div>
   </div>

@@ -19,10 +19,10 @@ const timesStore = useTimesStore()
 <template>
   <div class="fixed inset-0 app-grid app-mobile-grid sm:app-desktop-grid">
     <UiToolbar class="[grid-area:header]">
-      <ToolbarTitle
-        ><span class="text-[30px] align-middle">⏱️</span>
-        <span class="align-sub">Timetracker</span></ToolbarTitle
-      >
+      <ToolbarTitle>
+        <span class="text-[30px]">⏱️</span>
+        <span>Timetracker</span>
+      </ToolbarTitle>
 
       <ToolbarMenu>
         <template #button>Daten</template>

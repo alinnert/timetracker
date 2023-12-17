@@ -124,6 +124,7 @@ export const useTimesStore = defineStore('times', () => {
     },
 
     addTime(time: Date) {
+      if (Number.isNaN(time.getTime())) return
       timestamps.value.push(time)
     },
 

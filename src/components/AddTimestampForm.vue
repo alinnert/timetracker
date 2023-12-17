@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { useTimesStore } from '@/stores/times';
-import { ref } from 'vue';
-import TextInput from './TextInput.vue';
-import ToolbarButton from './ToolbarButton.vue';
+import { useTimesStore } from '@/stores/times'
+import { ref } from 'vue'
+import TextInput from './TextInput.vue'
+import ToolbarButton from './ToolbarButton.vue'
+import { debug } from 'console';
 
 const value = ref('')
 const error = ref(false)
@@ -10,7 +11,7 @@ const error = ref(false)
 const timesStore = useTimesStore()
 
 function handleAddClick() {
-  const regex = /^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d)$/
+  const regex = /^((\d\d\d\d)-(\d\d)-(\d\d) )?(\d\d?):(\d\d)$/
   const match = value.value.match(regex)
 
   if (match === null) {
@@ -18,30 +19,44 @@ function handleAddClick() {
     return
   }
 
-  const [, year, month, day, hours, minutes] = match
+  const [, , matchedYear, matchedMonth, matchedDay, matchedHours, matchedMinutes] = match
 
-  const time = new Date(
-    Number.parseInt(year),
-    Number.parseInt(month) - 1,
-    Number.parseInt(day),
-    Number.parseInt(hours),
-    Number.parseInt(minutes),
-  )
+  const {selectedDay} = timesStore
+
+  const year = matchedYear !== undefined ? Number.parseInt(matchedYear) : selectedDay.getFullYear()
+  const month = matchedMonth !== undefined ? Number.parseInt(matchedMonth) - 1 : selectedDay.getMonth()
+  const day = matchedDay !== undefined ? Number.parseInt(matchedDay) : selectedDay.getDate()
+  const hours = Number.parseInt(matchedHours)
+  const minutes = Number.parseInt(matchedMinutes)
+
+  console.log('selected', `${selectedDay} => ${year}-${month}-${day}`)
+
+  const time = new Date(year, month, day, hours, minutes)
 
   timesStore.addTime(time)
+
   value.value = ''
 }
 
 function handleErrorClose() {
   error.value = false
 }
+
+function handleInput() {
+  error.value = false
+}
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <form class="flex items-center gap-2" @submit.prevent="handleAddClick">
     <label for="add-timestamp-input" class="font-bold">Zeit hinzufügen:</label>
-    <TextInput id="add-timestamp-input" placeholder="yyyy-mm-dd hh:mm" v-model="value"></TextInput>
-    <ToolbarButton @click="handleAddClick">Hinzufügen</ToolbarButton>
+    <TextInput
+      id="add-timestamp-input"
+      placeholder="(yyyy-mm-dd) hh:mm"
+      @input="handleInput"
+      v-model="value"
+    ></TextInput>
+    <ToolbarButton type="submit">Hinzufügen</ToolbarButton>
 
     <template v-if="error">
       <div
@@ -67,5 +82,5 @@ function handleErrorClose() {
         </div>
       </div>
     </template>
-  </div>
+  </form>
 </template>

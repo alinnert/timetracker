@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
-import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+import { ChevronDownIcon } from '@heroicons/vue/16/solid'
 import ToolbarButton from './ToolbarButton.vue'
 </script>
 
@@ -9,7 +9,7 @@ import ToolbarButton from './ToolbarButton.vue'
     <div>
       <MenuButton :as="ToolbarButton">
         <slot name="button"></slot>
-        <ChevronDownIcon class="w-5 h-5"></ChevronDownIcon>
+        <ChevronDownIcon class="w-4 h-4"></ChevronDownIcon>
       </MenuButton>
     </div>
 

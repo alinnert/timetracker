@@ -38,8 +38,6 @@ export const useTimesStore = defineStore('times', () => {
       }
     }
 
-    days.sort(sortDates())
-
     const today = new Date(
       currentTime.value.getFullYear(),
       currentTime.value.getMonth(),
@@ -56,13 +54,12 @@ export const useTimesStore = defineStore('times', () => {
   const selectedDay = ref<Date>(new Date())
 
   const selectedDayIsToday = computed((): boolean => {
-    return isSameDay(currentTime.value, selectedDay.value)
+    return isToday(selectedDay.value)
   })
 
   const timestampsOfSelectedDay = computed((): Date[] => {
     const result = timestamps.value.filter((timestamp) => isSameDay(timestamp, selectedDay.value))
-    result.sort(sortDates(true))
-    return result
+    return result.toSorted(sortDates(true))
   })
 
   const workTimeOfSelectedDay = computed((): Duration => {
@@ -106,6 +103,10 @@ export const useTimesStore = defineStore('times', () => {
     return add(currentTime.value, remainingWorkTimeOfSelectedDay.value)
   })
 
+  const workTimeOfSelectedDayIsLessThan8Hours = computed(
+    () => (workTimeOfSelectedDay.value.hours ?? 0) < 8,
+  )
+
   return {
     currentTime,
     timestamps,
@@ -117,6 +118,7 @@ export const useTimesStore = defineStore('times', () => {
     breakTimeOfSelectedDay,
     remainingWorkTimeOfSelectedDay,
     timeAfterRemainingWorkTimeOfSelectedDay,
+    workTimeOfSelectedDayIsLessThan8Hours,
     importData,
 
     setSelectedDay(day: Date) {
@@ -126,6 +128,7 @@ export const useTimesStore = defineStore('times', () => {
     addTime(time: Date) {
       if (Number.isNaN(time.getTime())) return
       timestamps.value.push(time)
+      timestamps.value.sort(sortDates())
     },
 
     addCurrentTime() {
@@ -142,7 +145,7 @@ export const useTimesStore = defineStore('times', () => {
     },
 
     getDayInfo(day: Date): DayInfo {
-      const filteredTimestamps = timestamps.value.filter((time) => isSameDay(time, day))
+      const filteredTimestamps = timestamps.value.filter((time) => isSameDay(time, day)).toSorted(sortDates(true))
       const timestampsCount = filteredTimestamps.length
 
       if (isToday(day)) {

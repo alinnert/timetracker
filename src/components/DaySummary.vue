@@ -1,69 +1,22 @@
 <script setup lang="ts">
 import { useTimesStore } from '@/stores/times'
-import { format, formatDuration } from 'date-fns'
-import { de } from 'date-fns/locale'
-import { computed } from 'vue'
-import HoursProgress from './HoursProgress.vue'
+import DayProgress from './DayProgress.vue'
 
 const timesStore = useTimesStore()
-
-const lessThan8Hours = computed(() => (timesStore.workTimeOfSelectedDay.hours ?? 0) < 8)
-
-const remainingLabel = computed(() =>
-  lessThan8Hours.value ? '8 Stunden erreicht in' : 'Überstunden',
-)
 </script>
 
 <template>
-  <div>
-    <div class="text-lg font-bold mb-2">Zusammenfassung</div>
-    <div class="grid grid-cols-[1fr,auto] gap-2">
-      <div>
-        <div class="text-gray-500">Arbeitszeit</div>
-        <div class="font-bold">
-          {{
-            formatDuration(timesStore.workTimeOfSelectedDay, {
-              format: ['hours', 'minutes'],
-              locale: de,
-            }) || '-'
-          }}
-        </div>
-      </div>
-      <div class="text-right">
-        <div class="text-gray-500">{{ remainingLabel }}</div>
-        <div>
-          <span class="font-bold">
-            {{
-              formatDuration(timesStore.remainingWorkTimeOfSelectedDay, {
-                format: ['hours', 'minutes'],
-                locale: de,
-              })
-            }}
-          </span>
-          <template v-if="lessThan8Hours && timesStore.selectedDayIsToday">
-            <span> um </span>
-            <span class="font-bold">
-              {{
-                format(timesStore.timeAfterRemainingWorkTimeOfSelectedDay, 'HH:mm', { locale: de })
-              }}
-            </span>
-          </template>
-        </div>
-      </div>
-      <div class="col-span-2">
-        <HoursProgress :value="timesStore.workTimeOfSelectedDay"></HoursProgress>
-      </div>
-      <div>
-        <div class="text-gray-500">Pausenzeit</div>
-        <div class="font-bold">
-          {{
-            formatDuration(timesStore.breakTimeOfSelectedDay, {
-              format: ['hours', 'minutes'],
-              locale: de,
-            }) || '-'
-          }}
-        </div>
-      </div>
-    </div>
-  </div>
+  <DayProgress
+    :worktime="timesStore.workTimeOfSelectedDay"
+    :breaktime="timesStore.breakTimeOfSelectedDay"
+    :remaining="timesStore.remainingWorkTimeOfSelectedDay"
+    :is-today="timesStore.selectedDayIsToday"
+    :work-time-is-less-than8-hours="timesStore.workTimeOfSelectedDayIsLessThan8Hours"
+    :target-time="
+      timesStore.workTimeOfSelectedDayIsLessThan8Hours && timesStore.selectedDayIsToday
+        ? timesStore.timeAfterRemainingWorkTimeOfSelectedDay
+        : undefined
+    "
+    size="big"
+  ></DayProgress>
 </template>

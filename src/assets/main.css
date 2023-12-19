@@ -23,6 +23,6 @@
     grid-template:
       'header header' auto
       'left main' 1fr
-      / 300px 1fr;
+      / 360px 1fr;
   }
 }

@@ -3,8 +3,7 @@ import { useTimesStore } from '@/stores/times'
 import { format, isSameDay } from 'date-fns'
 import { de } from 'date-fns/locale'
 import { computed } from 'vue'
-import { formatDuration } from '../lib/date-fns/formatDuration'
-import HoursProgress from './HoursProgress.vue'
+import DayProgress from './DayProgress.vue'
 import UiStack from './UiStack.vue'
 
 const props = defineProps<{ day: Date }>()
@@ -13,14 +12,6 @@ const timesStore = useTimesStore()
 
 const dayInfo = computed(() => {
   return timesStore.getDayInfo(props.day)
-})
-
-const workTime = computed(() => {
-  return formatDuration(dayInfo.value.worktime)
-})
-
-const breakTime = computed(() => {
-  return formatDuration(dayInfo.value.break)
 })
 </script>
 
@@ -36,23 +27,14 @@ const breakTime = computed(() => {
     <UiStack :gap="2">
       <div
         class="flex-grow flex justify-between"
-        :class="{ 'opacity-50 italic': dayInfo.timestampsCount === 0 }"
+        :class="{ 'opacity-50': dayInfo.timestampsCount === 0 }"
       >
-        <span class="font-mono font-bold">{{ format(day, 'dd.MM.yyyy', { locale: de }) }}</span>
+        <span class="font-bold">{{ format(day, 'dd.MM.yyyy', { locale: de }) }}</span>
         <span>{{ format(day, 'EEEEEEE', { locale: de }) }}</span>
       </div>
 
       <template v-if="dayInfo.timestampsCount > 0">
-        <HoursProgress :value="dayInfo.worktime"></HoursProgress>
-
-        <div class="text-xs flex justify-between">
-          <div>
-            <span class="font-mono">{{ workTime }}</span>
-          </div>
-          <div>
-            Pause: <span class="font-mono">{{ breakTime }}</span>
-          </div>
-        </div>
+        <DayProgress :worktime="dayInfo.worktime" :breaktime="dayInfo.break" size="small"></DayProgress>
       </template>
     </UiStack>
   </div>

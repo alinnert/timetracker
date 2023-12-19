@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { ClipboardDocumentIcon, DocumentDuplicateIcon } from '@heroicons/vue/20/solid'
+import {
+  ArrowRightEndOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
+} from '@heroicons/vue/16/solid'
 import AddTimestampForm from './components/AddTimestampForm.vue'
 import DaySummary from './components/DaySummary.vue'
 import DaysList from './components/DaysList.vue'
@@ -8,10 +11,10 @@ import ImportToolbarForm from './components/ImportToolbarForm.vue'
 import TimestampList from './components/TimestampList.vue'
 import ToolbarMenu from './components/ToolbarMenu.vue'
 import ToolbarMenuItem from './components/ToolbarMenuItem.vue'
+import ToolbarTitle from './components/ToolbarTitle.vue'
 import UiStack from './components/UiStack.vue'
 import UiToolbar from './components/UiToolbar.vue'
 import { useTimesStore } from './stores/times'
-import ToolbarTitle from './components/ToolbarTitle.vue'
 
 const timesStore = useTimesStore()
 </script>
@@ -19,22 +22,23 @@ const timesStore = useTimesStore()
 <template>
   <div class="fixed inset-0 app-grid app-mobile-grid sm:app-desktop-grid">
     <UiToolbar class="[grid-area:header]">
-      <ToolbarTitle>
-        <span class="text-[30px]">⏱️</span>
-        <span>Timetracker</span>
-      </ToolbarTitle>
+      <ToolbarTitle>Timetracker</ToolbarTitle>
 
       <ToolbarMenu>
         <template #button>Daten</template>
 
-        <ToolbarMenuItem @click="timesStore.copyTimesToClipboard">
-          <DocumentDuplicateIcon class="w-6 h-6 text-sky-700"></DocumentDuplicateIcon>
-          <span>In Zwischenablage exportieren</span>
+        <ToolbarMenuItem @click="timesStore.importTimesFromClipboard">
+          <ArrowRightEndOnRectangleIcon
+            class="w-4 h-4 text-gray-600"
+          ></ArrowRightEndOnRectangleIcon>
+          <span>Aus Zwischenablage importieren</span>
         </ToolbarMenuItem>
 
-        <ToolbarMenuItem @click="timesStore.importTimesFromClipboard">
-          <ClipboardDocumentIcon class="w-6 h-6 text-amber-700"></ClipboardDocumentIcon>
-          <span>Aus Zwischenablage importieren</span>
+        <ToolbarMenuItem @click="timesStore.copyTimesToClipboard">
+          <ArrowRightStartOnRectangleIcon
+            class="w-4 h-4 text-gray-600"
+          ></ArrowRightStartOnRectangleIcon>
+          <span>In Zwischenablage exportieren</span>
         </ToolbarMenuItem>
       </ToolbarMenu>
 

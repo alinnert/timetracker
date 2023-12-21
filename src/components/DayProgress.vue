@@ -38,7 +38,6 @@ const hasOvertime = computed((): boolean => {
   if (props.remaining === undefined) {
     return false
   }
-  console.log(props.remaining)
   return getDurationSign(props.remaining) === -1
 })
 </script>

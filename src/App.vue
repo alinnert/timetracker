@@ -15,6 +15,7 @@ import ToolbarTitle from './components/ToolbarTitle.vue'
 import UiStack from './components/UiStack.vue'
 import UiToolbar from './components/UiToolbar.vue'
 import { useTimesStore } from './stores/times'
+import ToolbarMenuTitle from './components/ToolbarMenuTitle.vue'
 
 const timesStore = useTimesStore()
 </script>
@@ -27,18 +28,20 @@ const timesStore = useTimesStore()
       <ToolbarMenu>
         <template #button>Daten</template>
 
+        <ToolbarMenuTitle>Zwischenablage</ToolbarMenuTitle>
+
         <ToolbarMenuItem @click="timesStore.importTimesFromClipboard">
           <ArrowRightEndOnRectangleIcon
             class="w-4 h-4 text-gray-600"
           ></ArrowRightEndOnRectangleIcon>
-          <span>Aus Zwischenablage importieren</span>
+          <span>Importieren</span>
         </ToolbarMenuItem>
 
         <ToolbarMenuItem @click="timesStore.copyTimesToClipboard">
           <ArrowRightStartOnRectangleIcon
             class="w-4 h-4 text-gray-600"
           ></ArrowRightStartOnRectangleIcon>
-          <span>In Zwischenablage exportieren</span>
+          <span>Exportieren</span>
         </ToolbarMenuItem>
       </ToolbarMenu>
 

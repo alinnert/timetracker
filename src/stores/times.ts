@@ -145,7 +145,9 @@ export const useTimesStore = defineStore('times', () => {
     },
 
     getDayInfo(day: Date): DayInfo {
-      const filteredTimestamps = timestamps.value.filter((time) => isSameDay(time, day)).toSorted(sortDates(true))
+      const filteredTimestamps = timestamps.value
+        .filter((time) => isSameDay(time, day))
+        .toSorted(sortDates(true))
       const timestampsCount = filteredTimestamps.length
 
       if (isToday(day)) {

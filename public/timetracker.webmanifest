@@ -3,7 +3,7 @@
   "description": "Eine Anwendung zum Mitzählen der gearbeiteten Zeit.",
   "lang": "de-DE",
   "display": "standalone",
-  "theme_color": "#ffffff",
+  "theme_color": "#f9fafb",
   "start_url": "https://alinnert.github.io/timetracker",
   "icons": [
     {

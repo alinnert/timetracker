@@ -7,15 +7,15 @@ import AddTimestampForm from './components/AddTimestampForm.vue'
 import DaySummary from './components/DaySummary.vue'
 import DaysList from './components/DaysList.vue'
 import DetailHeader from './components/DetailHeader.vue'
-import ImportToolbarForm from './components/ImportToolbarForm.vue'
 import TimestampList from './components/TimestampList.vue'
 import ToolbarMenu from './components/ToolbarMenu.vue'
 import ToolbarMenuItem from './components/ToolbarMenuItem.vue'
+import ToolbarMenuTitle from './components/ToolbarMenuTitle.vue'
 import ToolbarTitle from './components/ToolbarTitle.vue'
+import UiDialog from './components/UiDialog.vue'
 import UiStack from './components/UiStack.vue'
 import UiToolbar from './components/UiToolbar.vue'
 import { useTimesStore } from './stores/times'
-import ToolbarMenuTitle from './components/ToolbarMenuTitle.vue'
 
 const timesStore = useTimesStore()
 </script>
@@ -34,6 +34,7 @@ const timesStore = useTimesStore()
           <ArrowRightEndOnRectangleIcon
             class="w-4 h-4 text-gray-600"
           ></ArrowRightEndOnRectangleIcon>
+
           <span>Importieren</span>
         </ToolbarMenuItem>
 
@@ -41,15 +42,40 @@ const timesStore = useTimesStore()
           <ArrowRightStartOnRectangleIcon
             class="w-4 h-4 text-gray-600"
           ></ArrowRightStartOnRectangleIcon>
+
           <span>Exportieren</span>
         </ToolbarMenuItem>
       </ToolbarMenu>
 
-      <AddTimestampForm></AddTimestampForm>
+      <UiDialog
+        :is-open="timesStore.importData.length > 0"
+        title="Daten importieren"
+        :buttons="[
+          {
+            label: 'Ersetzen',
+            type: 'primary',
+            onClick() {
+              timesStore.applyImport(true)
+            },
+          },
+          {
+            label: 'Zusammenführen',
+            onClick() {
+              timesStore.applyImport()
+            },
+          },
+          {
+            label: 'Abbrechen',
+            onClick() {
+              timesStore.abortImport()
+            },
+          },
+        ]"
+      >
+        Es wurden {{ timesStore.importData.length }} {{ timesStore.importData.length === 1 ? 'Eintrag' : 'Einträge' }} gefunden. Sollen die aktuellen Einträge ersetzt oder alle zusammengeführt werden?
+      </UiDialog>
 
-      <template #right>
-        <ImportToolbarForm></ImportToolbarForm>
-      </template>
+      <AddTimestampForm></AddTimestampForm>
     </UiToolbar>
 
     <div class="[grid-area:left] overflow-auto">

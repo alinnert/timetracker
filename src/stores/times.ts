@@ -86,10 +86,10 @@ export const useTimesStore = defineStore('times', () => {
 
     list.forEach((timestamp, index) => {
       if (index % 2 === 1 || index === 0) return
+      const previousTimestamp = timestampsOfSelectedDay.value[index - 1]
+      if (timestamp.getTime() <= previousTimestamp.getTime()) return
 
-      breakTimeDurations.push(
-        intervalToDuration({ start: timestampsOfSelectedDay.value[index - 1], end: timestamp }),
-      )
+      breakTimeDurations.push(intervalToDuration({ start: previousTimestamp, end: timestamp }))
     })
 
     return addDurations(...breakTimeDurations)

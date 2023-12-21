@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useTimesStore } from '@/stores/times'
+import { XMarkIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
 import TextInput from './TextInput.vue'
-import ToolbarButton from './ToolbarButton.vue'
-import { XMarkIcon } from '@heroicons/vue/20/solid'
+import UiButton from './UiButton.vue'
 
 const value = ref('')
 const error = ref(false)
@@ -57,7 +57,7 @@ function handleInput() {
       @input="handleInput"
       v-model="value"
     ></TextInput>
-    <ToolbarButton type="submit">Hinzufügen</ToolbarButton>
+    <UiButton type="submit">Hinzufügen</UiButton>
 
     <template v-if="error">
       <div

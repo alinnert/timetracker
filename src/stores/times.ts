@@ -2,7 +2,7 @@ import { addDurations } from '@/lib/date-fns/addDuration'
 import { subtractDuration } from '@/lib/date-fns/subtractDuration'
 import { sortDates } from '@/lib/date/sortDates'
 import { sumTimestamps, type SumTimestampsResult } from '@/lib/sys/times'
-import { add, intervalToDuration, isSameDay, isToday } from 'date-fns'
+import { add, intervalToDuration, isSameDay, isToday, type Duration } from 'date-fns'
 import { defineStore } from 'pinia'
 import { computed, ref, watchEffect } from 'vue'
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Duration } from 'date-fns'
+
 const props = defineProps<{ value: Duration }>()
 
 function getSegmentWidth(index: number): string {

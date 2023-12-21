@@ -1,4 +1,4 @@
-import { intervalToDuration } from 'date-fns'
+import { intervalToDuration, type Duration } from 'date-fns'
 import { addDuration } from '../date-fns/addDuration'
 
 export type SumTimestampsResult = {
